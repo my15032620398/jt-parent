@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	<!-- 实例化SqlSessionFactoryBean -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 配置mybatis框架的核心配置文件 -->
+		<property name="configLocation"
+			value="classpath:/mybatis/mybatis-config.xml" />
+		<!-- 配置mybatis框架的映射文件 -->
+		<property name="mapperLocations"
+			value="classpath:/mybatis/mapper/*Mapper.xml" />
+		<!-- 为整个包下的类设置别名 -->
+		<property name="typeAliasesPackage" value="com.jt.common.po" />
+	</bean>
+
+	<!-- 为mapper接口创建代理对象 1.JDk动态代理 要求:要求被代理者必须实现接口 2.CGLIB动态代理 特点有无接口都可以创建代理对象,但是创建出来的代理对象是目标对象的子类 
+		3.spring创建代理对象的原则 如果被代理者实现了接口,则采用jdk,如果没有哦实现接口,则采用cglib 特点:只有cglib可以强制使用,强制使用jdk代理有风险. -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.jt.manage.mapper"></property>
+	</bean>
+</beans>
